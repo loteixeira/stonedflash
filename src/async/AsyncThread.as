@@ -10,7 +10,7 @@ package async
 	{
 		private var threadCallback:Function;
 		private var exitCallback:Function;
-		private var timeoutId:int;
+		internal var timeoutId:int;
 
 		public function AsyncThread(threadCallback:Function = null, exitCallback:Function = null, param:Object = null)
 		{
@@ -55,7 +55,7 @@ package async
 			super.exit();
 		}
 
-		private function runInternal():void
+		internal function runInternal():void
 		{
 			if (run())
 				timeoutId = setTimeout(runInternal, 0);
