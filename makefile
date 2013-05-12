@@ -25,4 +25,4 @@ test:
 	$(SWF_COM) $(TEST_FLAGS) -source-path+=$(SOURCE_PATH) -output=$(TEST_BIN) -- $(TEST_MAIN)
 
 library:
-	$(SWC_COM) $(LIB_FLAGS) -include-sources=$(SOURCE_PATH) -output=$(LIB_BIN)
+	$(SWC_COM) $(LIB_FLAGS) -include-sources=$(SOURCE_PATH) -library-path+=lib/ -output=$(LIB_BIN)
