@@ -1,35 +1,66 @@
 package async
 {
 	import flash.events.*;
+	import flash.utils.*;
 
 	/**
 	 * @author lteixeira
 	 */
-	public class AsyncThread extends EventDispatcher implements IAsyncTask
+	public class AsyncThread extends AsyncTask
 	{
-		private var openEvent:Event;
-		private var completeEvent:Event;
+		private var threadCallback:Function;
+		private var exitCallback:Function;
+		private var timeoutId:int;
 
-		public function AsyncThread()
+		public function AsyncThread(threadCallback:Function = null, exitCallback:Function = null, param:Object = null)
 		{
-			openEvent = new Event(Event.OPEN);
-			completeEvent = new Event(Event.COMPLETE);
+			super(param);
+
+			this.threadCallback = threadCallback;
+			this.exitCallback = exitCallback;
+
+			timeoutId = -1;
+		}
+
+		override public function get running():Boolean
+		{
+			return timeoutId > -1;
 		}
 		
-		public function start():void
+		override public function start():void
 		{
-			dispatchEvent(openEvent);
-			Async.thread(run, exit);
+			super.start();
+			timeoutId = setTimeout(runInternal, 0);
 		}
 		
-		protected function run():Boolean
+		override public function run():Boolean
 		{
+			if (threadCallback != null)
+				return threadCallback(param);
+
 			return false;
 		}
 		
-		private function exit():void
+		override public function exit():void
 		{
-			dispatchEvent(completeEvent);
+			if (!running)
+				return;
+
+			clearTimeout(timeoutId);
+			timeoutId = -1;
+
+			if (exitCallback != null)
+				exitCallback(param);
+
+			super.exit();
+		}
+
+		private function runInternal():void
+		{
+			if (run())
+				timeoutId = setTimeout(runInternal, 0);
+			else
+				exit();
 		}
 	}
 }
