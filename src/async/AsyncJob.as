@@ -29,6 +29,15 @@ package async
 			runNextTask();
 		}
 
+		public function cancel():void
+		{
+			if (currentTask >= taskCount)
+				return;
+
+			var task:IAsyncTask = tasks[current];
+			task.exit();
+		}
+
 		private function readFromArray(array:Array):void
 		{
 			var l:uint = array.length;
