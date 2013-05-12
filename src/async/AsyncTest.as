@@ -40,20 +40,36 @@ package async
 		private function start():void
 		{
 			var param:Object = {i: 0};
-			var thread:AsyncLoop = new AsyncLoop(run, condition, null, param);
-			thread.start();
+			var thread:AsyncFor = new AsyncFor(run, condition, increment, enter, null, param);
+
+			var job:AsyncJob = new AsyncJob(thread, [thread, thread, [thread]]);
+			job.go();
 		}
 
 		private function condition(param:Object):Boolean
 		{
-			param.i++;
 			return param.i < 10;
+		}
+
+		private function increment(param:Object):void
+		{
+			param.i++;
 		}
 
 		private function run(param:Object):Boolean
 		{
 			cpln(param.i);
 			return true;
+		}
+
+		private function enter(param:Object):void
+		{
+			cpln("##########");
+			param.i = 0;
+		}
+
+		private function exit(param:Object):void
+		{
 		}
 	}
 }
