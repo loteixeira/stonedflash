@@ -39,37 +39,64 @@ package async
 
 		private function start():void
 		{
-			var param:Object = {i: 0};
-			var thread:AsyncFor = new AsyncFor(run, condition, increment, enter, null, param);
+			var primeTask:AsyncFor = new AsyncFor(
+					// run
+					function(p:Object):Boolean
+					{
+						var isPrime:Boolean = true;
 
-			var job:AsyncJob = new AsyncJob(thread, [thread, thread, [thread]]);
+						for (var i:uint = 2; i < p.i; i++)
+						{
+							if (p.i % i == 0)
+							{
+								isPrime = false;
+								break;
+							}
+						}
+
+						if (isPrime)
+						{
+							p.primeCount++;
+							cpln("Prime found! " + p.i + " (" + p.primeCount + ")");
+
+							if (p.primeCount == p.targetPrime)
+								p.value = p.i;
+						}
+
+						return true;
+					},
+
+					// condition
+					function (p:Object):Boolean
+					{
+						return p.primeCount < p.targetPrime;
+					},
+
+					// increment
+					function (p:Object):void
+					{
+						p.i++;
+					},
+
+					// enter
+					function (p:Object):void
+					{
+						cpln("#######");
+						cpln("Tring to find the " + p.targetPrime + "th prime number");
+					},
+
+					// exit
+					function (p:Object):void
+					{
+						cpln("The " + p.targetPrime + "th prime number is " + p.value);
+					},
+
+					// param
+					{i: 1, primeCount: 0, targetPrime: 10, value: -1}
+				);
+
+			var job:AsyncJob = new AsyncJob(primeTask);
 			job.go();
-		}
-
-		private function condition(param:Object):Boolean
-		{
-			return param.i < 10;
-		}
-
-		private function increment(param:Object):void
-		{
-			param.i++;
-		}
-
-		private function run(param:Object):Boolean
-		{
-			cpln(param.i);
-			return true;
-		}
-
-		private function enter(param:Object):void
-		{
-			cpln("##########");
-			param.i = 0;
-		}
-
-		private function exit(param:Object):void
-		{
 		}
 	}
 }
