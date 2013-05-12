@@ -22,7 +22,7 @@ LIB_FLAGS=-debug=false
 all: test library
 
 test:
-	$(SWF_COM) $(DEMO_FLAGS) -source-path+=$(SOURCE_PATH) -output=$(TEST_BIN) -- $(TEST_MAIN)
+	$(SWF_COM) $(TEST_FLAGS) -source-path+=$(SOURCE_PATH) -output=$(TEST_BIN) -- $(TEST_MAIN)
 
 library:
 	$(SWC_COM) $(LIB_FLAGS) -include-sources=$(SOURCE_PATH) -output=$(LIB_BIN)
