@@ -1,6 +1,5 @@
 package async
 {
-	import flash.events.*;
 	import flash.utils.*;
 
 	/**
@@ -13,7 +12,6 @@ package async
 		public function AsyncLoop(loopCallback:Function = null, conditionCallback:Function = null, exitCallback:Function = null, param:Object = null)
 		{
 			super(loopCallback, exitCallback, param);
-
 			this.conditionCallback = conditionCallback;
 		}
 
