@@ -1,39 +1,41 @@
 package async
 {
 	import flash.events.*;
+	import flash.utils.*;
 
 	/**
 	 * @author lteixeira
 	 */
-	public class AsyncLoop extends EventDispatcher implements IAsyncTask
+	public class AsyncLoop extends AsyncThread
 	{
-		private var openEvent:Event;
-		private var completeEvent:Event;
+		private var conditionCallback:Function;
 
-		public function AsyncLoop()
+		public function AsyncLoop(loopCallback:Function = null, conditionCallback:Function = null, exitCallback:Function = null, param:Object = null)
 		{
-			openEvent = new Event(Event.OPEN);
-			completeEvent = new Event(Event.COMPLETE);
+			super(loopCallback, exitCallback, param);
+
+			this.conditionCallback = conditionCallback;
 		}
-		
-		public function start():void
+
+		public function condition():Boolean
 		{
-			dispatchEvent(openEvent);
-			Async.loop(condition, run, exit);
-		}
-		
-		protected function condition():Boolean
-		{
+			if (conditionCallback != null)
+				return conditionCallback(param);
+
 			return false;
 		}
-		
-		protected function run():void
+
+		override internal function runInternal():void
 		{
-		}
-		
-		private function exit():void
-		{
-			dispatchEvent(completeEvent);
+			if (condition())
+			{
+				run();
+				timeoutId = setTimeout(runInternal, 0);
+			}
+			else
+			{
+				exit();
+			}
 		}
 	}
 }
