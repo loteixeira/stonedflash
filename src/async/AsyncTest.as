@@ -14,7 +14,7 @@ package async
 			Console.create(this);
 			Console.instance.draggable = false;
 			Console.instance.resizable = false;
-			cpln("async library version " + Async.VERSION);
+			cpln("async library version " + asyncVersion());
 			cpln("starting test...");
 			cpln("");
 
@@ -39,14 +39,20 @@ package async
 
 		private function start():void
 		{
-			var param:Object = {};
-			var thread:AsyncThread = new AsyncThread(run, null, param);
+			var param:Object = {i: 0};
+			var thread:AsyncLoop = new AsyncLoop(run, condition, null, param);
 			thread.start();
+		}
+
+		private function condition(param:Object):Boolean
+		{
+			param.i++;
+			return param.i < 10;
 		}
 
 		private function run(param:Object):Boolean
 		{
-			cpln("oeee");
+			cpln(param.i);
 			return true;
 		}
 	}
