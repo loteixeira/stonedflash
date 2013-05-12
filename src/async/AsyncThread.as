@@ -8,9 +8,11 @@ package async
 	 */
 	public class AsyncThread extends AsyncTask
 	{
+		public var priority:String;
+
 		private var threadCallback:Function;
 		private var exitCallback:Function;
-		internal var timeoutId:int;
+		private var timeoutId:int;
 
 		public function AsyncThread(threadCallback:Function = null, exitCallback:Function = null, param:Object = null)
 		{
@@ -20,6 +22,7 @@ package async
 			this.exitCallback = exitCallback;
 
 			timeoutId = -1;
+			priority = AsyncPriority.MEDIUM;
 		}
 
 		override public function get running():Boolean
@@ -30,7 +33,7 @@ package async
 		override public function start():void
 		{
 			super.start();
-			timeoutId = setTimeout(runInternal, 0);
+			setupTimeout();
 		}
 		
 		override public function run():Boolean
@@ -58,9 +61,31 @@ package async
 		internal function runInternal():void
 		{
 			if (run())
-				timeoutId = setTimeout(runInternal, 0);
+				setupTimeout();
 			else
 				exit();
+		}
+
+		internal function setupTimeout():void
+		{
+			timeoutId = setTimeout(runInternal, getMilisecondsFromPriority());		
+		}
+
+		private function getMilisecondsFromPriority():uint
+		{
+			if (priority == AsyncPriority.HIGHEST)
+				return 0;
+
+			if (priority == AsyncPriority.HIGH)
+				return 10;
+
+			if (priority == AsyncPriority.MEDIUM)
+				return 50;
+
+			if (priority == AsyncPriority.LOW)
+				return 100;
+
+			return 500;
 		}
 	}
 }

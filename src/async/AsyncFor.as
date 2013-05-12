@@ -24,7 +24,7 @@ package async
 			{
 				run();
 				increment();
-				timeoutId = setTimeout(runInternal, 0);
+				setupTimeout();
 			}
 			else
 			{

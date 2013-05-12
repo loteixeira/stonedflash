@@ -28,7 +28,7 @@ package async
 		override public function start():void
 		{
 			super.start();
-			
+
 			if (enterCallback != null)
 				enterCallback(param);
 		}
@@ -38,7 +38,7 @@ package async
 			if (condition())
 			{
 				run();
-				timeoutId = setTimeout(runInternal, 0);
+				setupTimeout();
 			}
 			else
 			{
