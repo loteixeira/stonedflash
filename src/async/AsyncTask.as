@@ -27,6 +27,11 @@ package async
 			return param;
 		}
 
+		public function setParam(param:Object):void
+		{
+			this.param = param;
+		}
+
 		public function start():void
 		{
 			dispatchEvent(openEvent);
