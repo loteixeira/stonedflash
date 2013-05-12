@@ -6,9 +6,9 @@ package async
 	{
 		private var incrementCallback:Function;
 
-		public function AsyncFor(loopCallback:Function = null, conditionCallback:Function = null, incrementCallback:Function = null, exitCallback:Function = null, param:Object = null)
+		public function AsyncFor(loopCallback:Function = null, conditionCallback:Function = null, incrementCallback:Function = null, enterCallback:Function = null, exitCallback:Function = null, param:Object = null)
 		{
-			super(loopCallback, conditionCallback, exitCallback, param);
+			super(loopCallback, conditionCallback, enterCallback, exitCallback, param);
 			this.incrementCallback = incrementCallback;
 		}
 
