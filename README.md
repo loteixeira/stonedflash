@@ -34,18 +34,46 @@ A AsyncThread uses three callbacks:
 * runCallback: called at each iteraction - the task will run until this method returns false
 * exitCallback: called when the task ends
 
-Example:
+Example - calculate the average value:
 ```actionscript
-function runJob(tasks:Array):void
-{
-	var job:AsyncJob = new AsyncJob(tasks);
-	job.addEventListener(Event.COMPLETE, jobComplete);
-	job.go();
-}
+var averageTask:AsyncThread = new AsyncThread(
+	// run
+	function(p:Object):Boolean
+	{
+		for (var i:uint = 0; i < p.count; i++)
+			p.result += p.values[i];
+
+		p.result /= p.count;
+
+		return false;
+	},
+
+	// enter
+	function (p:Object):void
+	{
+		trace("#######");
+		trace("Calculate the average value");
+
+		for (var i:uint = 0; i < p.count; i++)
+			values.push(Math.random());
+	},
+
+	// exit
+	function (p:Object):void
+	{
+		trace("The average value is " + p.result);
+	},
+
+	// param
+	{values: [], count: 10, result: 0}
+);
+
+var job:AsyncJob = new AsyncJob(primeTask);
+job.go();
 ```
 
 ## AsyncFor
-A AsyncFor uses three callbacks:
+A AsyncFor uses five callbacks:
 * conditionCallback: called before runCallback - the task keeps running until this method returns false
 * incrementCallback: called after runCallback - it should be used to increment (or decrement) the counter variable
 * enterCallback: called when the task starts
@@ -54,62 +82,62 @@ A AsyncFor uses three callbacks:
 
 Example - find the 10th prime number:
 ```actionscript
-	var primeTask:AsyncFor = new AsyncFor(
-		// run
-		function(p:Object):Boolean
-		{
-			var isPrime:Boolean = true;
+var primeTask:AsyncFor = new AsyncFor(
+	// run
+	function(p:Object):Boolean
+	{
+		var isPrime:Boolean = true;
 
-			for (var i:uint = 2; i < p.i; i++)
+		for (var i:uint = 2; i < p.i; i++)
+		{
+			if (p.i % i == 0)
 			{
-				if (p.i % i == 0)
-				{
-					isPrime = false;
-					break;
-				}
+				isPrime = false;
+				break;
 			}
+		}
 
-			if (isPrime)
-			{
-				p.primeCount++;
-				cpln("Prime found! " + p.i + " (" + p.primeCount + ")");
-
-				if (p.primeCount == p.targetPrime)
-					p.value = p.i;
-			}
-
-			return true;
-		},
-
-		// condition
-		function (p:Object):Boolean
+		if (isPrime)
 		{
-			return p.primeCount < p.targetPrime;
-		},
+			p.primeCount++;
+			trace("Prime found! " + p.i + " (" + p.primeCount + ")");
 
-		// increment
-		function (p:Object):void
-		{
-			p.i++;
-		},
+			if (p.primeCount == p.targetPrime)
+				p.value = p.i;
+		}
 
-		// enter
-		function (p:Object):void
-		{
-			cpln("#######");
-			cpln("Tring to find the " + p.targetPrime + "th prime number");
-		},
+		return true;
+	},
 
-		// exit
-		function (p:Object):void
-		{
-			cpln("The " + p.targetPrime + "th prime number is " + p.value);
-		},
+	// condition
+	function (p:Object):Boolean
+	{
+		return p.primeCount < p.targetPrime;
+	},
 
-		// param
-		{i: 1, primeCount: 0, targetPrime: 10, value: -1}
-	);
+	// increment
+	function (p:Object):void
+	{
+		p.i++;
+	},
 
-	var job:AsyncJob = new AsyncJob(primeTask);
-	job.go();
+	// enter
+	function (p:Object):void
+	{
+		trace("#######");
+		trace("Tring to find the " + p.targetPrime + "th prime number");
+	},
+
+	// exit
+	function (p:Object):void
+	{
+		trace("The " + p.targetPrime + "th prime number is " + p.value);
+	},
+
+	// param
+	{i: 1, primeCount: 0, targetPrime: 10, value: -1}
+);
+
+var job:AsyncJob = new AsyncJob(primeTask);
+job.go();
 ```
