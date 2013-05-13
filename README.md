@@ -70,7 +70,7 @@ var averageTask:AsyncThread = new AsyncThread(
 	{values: [], count: 10, result: 0}
 );
 
-var job:AsyncJob = new AsyncJob(primeTask);
+var job:AsyncJob = new AsyncJob(averageTask);
 job.go();
 ```
 
@@ -119,7 +119,7 @@ var hexTask:AsyncLoop = new AsyncLoop(
 	{values: []}
 );
 
-var job:AsyncJob = new AsyncJob(primeTask);
+var job:AsyncJob = new AsyncJob(hexTask);
 job.go();
 ```
 
