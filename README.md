@@ -192,3 +192,8 @@ var primeTask:AsyncFor = new AsyncFor(
 var job:AsyncJob = new AsyncJob(primeTask);
 job.go();
 ```
+
+# compilation
+Async library is compiled via make tool. Two recipes are defined in makefile:
+* test: generates the test application (async-test.swf)
+* library: generates the library component (async.swc)
