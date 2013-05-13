@@ -3,6 +3,9 @@ Async is a set of tools to perform asynchronous tasks in Actionscript3 without t
 
 **Download the latest tag:** link
 
+This software is distribuited under the terms of the Do What the Fuck You Want to Public License<br>
+http://www.wtfpl.net/txt/copying/
+
 # basic
 Every async task must implements the interface IAsyncTask. Also, it needs to throw two events:
 * Event.OPEN at start
