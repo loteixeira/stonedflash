@@ -1,7 +1,7 @@
 # async version 0.1.0
 Async is a set of tools to perform asynchronous tasks in Actionscript3 without too much pain.
 
-**Download the latest tag:** https://github.com/loteixeira/async/tree/0.1.0
+**Download the latest tag:** https://github.com/loteixeira/async/archive/0.1.0.zip
 
 This software is distribuited under the terms of the Do What the Fuck You Want to Public License<br>
 http://www.wtfpl.net/txt/copying/
