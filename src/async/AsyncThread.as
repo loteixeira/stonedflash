@@ -8,17 +8,17 @@ package async
 	 */
 	public class AsyncThread extends AsyncTask
 	{
-		public var priority:String;
-
 		private var threadCallback:Function;
+		private var enterCallback:Function;
 		private var exitCallback:Function;
 		private var timeoutId:int;
 
-		public function AsyncThread(threadCallback:Function = null, exitCallback:Function = null, param:Object = null)
+		public function AsyncThread(threadCallback:Function = null, enterCallback:Function = null, exitCallback:Function = null, param:Object = null)
 		{
 			super(param);
 
 			this.threadCallback = threadCallback;
+			this.enterCallback = enterCallback;
 			this.exitCallback = exitCallback;
 
 			timeoutId = -1;
@@ -34,6 +34,9 @@ package async
 		{
 			super.start();
 			setupTimeout();
+
+			if (enterCallback != null)
+				enterCallback(param);
 		}
 		
 		override public function run():Boolean

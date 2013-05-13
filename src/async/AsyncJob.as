@@ -19,9 +19,22 @@ package async
 			return tasks.length;
 		}
 
-		public function get currentTask():uint
+		public function get currentIndex():uint
 		{
 			return current;
+		}
+
+		public function get currentTask():IAsyncTask
+		{
+			return tasks[current];
+		}
+
+		public function overridePriority(priority:String):void
+		{
+			var l:uint = tasks.length;
+
+			for (var i:uint; i < l; i++)
+				tasks[i].priority = priority;
 		}
 
 		public function go():void
@@ -31,7 +44,7 @@ package async
 
 		public function cancel():void
 		{
-			if (currentTask >= taskCount)
+			if (currentIndex >= taskCount)
 				return;
 
 			var task:IAsyncTask = tasks[current];
@@ -71,6 +84,7 @@ package async
 
 		private function taskOpen(e:Event):void
 		{
+			dispatchEvent(new Event(Event.OPEN));
 		}
 
 		private function taskComplete(e:Event):void
@@ -78,6 +92,7 @@ package async
 			var task:IAsyncTask = tasks[current];
 			task.removeEventListener(Event.OPEN, taskOpen);
 			task.removeEventListener(Event.COMPLETE, taskComplete);
+			dispatchEvent(new Event(Event.CLOSE));
 			current++;
 			runNextTask();
 		}

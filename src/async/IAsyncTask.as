@@ -4,6 +4,8 @@ package async
 
 	public interface IAsyncTask extends IEventDispatcher
 	{
+		function get priority():String;
+		function set priority(value:String):void;
 		function get running():Boolean;
 
 		function start():void;
