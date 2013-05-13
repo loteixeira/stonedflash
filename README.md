@@ -27,6 +27,8 @@ function runJob(tasks:Array):void
 # concrete tasks
 You may use the builtin concrete tasks available with the library. These classes simulates async operations such as threads, loops, etc.
 All concrete tasks are based in callbacks, you can set free-functions as callbacks, without the need of extending the concrete task class.
+However, it's possible also to extend a concrete task class and override the start, run and exit methods (without need of free-function callbacks).
+Thus, you get two options: create a concrete task with free-function callbacks or extends a concrete task and reimplement the methods.
 
 ## AsyncThread
 A AsyncThread uses three callbacks:
@@ -55,7 +57,7 @@ var averageTask:AsyncThread = new AsyncThread(
 		trace("Calculate the average value");
 
 		for (var i:uint = 0; i < p.count; i++)
-			values.push(Math.random());
+			p.values.push(Math.random());
 	},
 
 	// exit
@@ -66,6 +68,55 @@ var averageTask:AsyncThread = new AsyncThread(
 
 	// param
 	{values: [], count: 10, result: 0}
+);
+
+var job:AsyncJob = new AsyncJob(primeTask);
+job.go();
+```
+
+## AsyncLoop
+A AsyncLoop uses four callbacks:
+* conditionCallback: called before runCallback - the task keeps running until this method returns false
+* enterCallback: called when the task starts
+* runCallback: called at each iteraction - the return value of this function isn't used (now the conditionCallback tells whether the task should keep running)
+* exitCallback: called when the task ends
+
+Example - shows a list of numbers as hex values:
+```actionscript
+var hexTask:AsyncLoop = new AsyncLoop(
+	// run
+	function(p:Object):Boolean
+	{
+		var value:uint = p.values.pop();
+		trace(value.toString(16));
+	},
+
+	// condition
+	function (p:Object):Boolean
+	{
+		return p.values.length > 0
+	},
+
+	// enter
+	function (p:Object):void
+	{
+		trace("#######");
+		trace("Converting to hex");
+
+		var l:uint = 20;
+
+		for (var i:uint = 0; i < l; i++)
+			p.values.push(Math.round(Math.random() * 0xffffff));
+	},
+
+	// exit
+	function (p:Object):void
+	{
+		trace("Done!");
+	},
+
+	// param
+	{values: []}
 );
 
 var job:AsyncJob = new AsyncJob(primeTask);
