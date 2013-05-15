@@ -63,7 +63,7 @@ package stoned
 			}
 			else
 			{
-				var urlRequest:URLRequest = sourceData is URLRequest ? sourceData as URLRequest : new URLRequest(sourceData);
+				var urlRequest:URLRequest = sourceData is URLRequest ? sourceData as URLRequest : new URLRequest(sourceData.toString());
 				loader.load(urlRequest, context);
 			}
 
