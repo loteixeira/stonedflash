@@ -1,9 +1,9 @@
 //
-// async library
+// stonedflash library
 // Copyright (C) 2013 Lucas Teixeira (Disturbed Coder)
-// Project page: https://github.com/loteixeira/async
+// Project page: https://github.com/loteixeira/stonedflash
 //
-// This software is distribuited under the terms of the Do What the Fuck You Want to Public License
+// This software is distribuited under the terms of the WTFPL
 // http://www.wtfpl.net/txt/copying/
 //
 package
