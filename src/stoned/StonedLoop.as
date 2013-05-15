@@ -17,9 +17,9 @@ package stoned
 	{
 		private var conditionCallback:Function;
 
-		public function StonedLoop(loopCallback:Function = null, conditionCallback:Function = null, enterCallback:Function = null, exitCallback:Function = null, param:Object = null)
+		public function StonedLoop(param:Object = null, enterCallback:Function = null, conditionCallback:Function = null, loopCallback:Function = null, exitCallback:Function = null)
 		{
-			super(loopCallback, enterCallback, exitCallback, param);
+			super(param, enterCallback, loopCallback, exitCallback);
 			this.conditionCallback = conditionCallback;
 		}
 

@@ -21,12 +21,12 @@ package stoned
 		private var exitCallback:Function;
 		private var timeoutId:int;
 
-		public function StonedThread(threadCallback:Function = null, enterCallback:Function = null, exitCallback:Function = null, param:Object = null)
+		public function StonedThread(param:Object = null, enterCallback:Function = null, threadCallback:Function = null, exitCallback:Function = null)
 		{
 			super(param);
 
-			this.threadCallback = threadCallback;
 			this.enterCallback = enterCallback;
+			this.threadCallback = threadCallback;
 			this.exitCallback = exitCallback;
 
 			timeoutId = -1;
@@ -91,12 +91,12 @@ package stoned
 				return 10;
 
 			if (priority == StonedPriority.MEDIUM)
-				return 50;
+				return 25;
 
 			if (priority == StonedPriority.LOW)
-				return 100;
+				return 50;
 
-			return 500;
+			return 100;
 		}
 	}
 }

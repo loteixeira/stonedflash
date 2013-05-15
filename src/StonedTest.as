@@ -50,6 +50,22 @@ package
 		private function start():void
 		{
 			var primeTask:StonedFor = new StonedFor(
+					// param
+					{i: 1, primeCount: 0, targetPrime: 10, value: -1},
+
+					// enter
+					function (p:Object):void
+					{
+						cpln("#######");
+						cpln("Tring to find the " + p.targetPrime + "th prime number");
+					},
+
+					// condition
+					function (p:Object):Boolean
+					{
+						return p.primeCount < p.targetPrime;
+					},
+
 					// run
 					function(p:Object):Boolean
 					{
@@ -76,33 +92,17 @@ package
 						return true;
 					},
 
-					// condition
-					function (p:Object):Boolean
-					{
-						return p.primeCount < p.targetPrime;
-					},
-
 					// increment
 					function (p:Object):void
 					{
 						p.i++;
 					},
 
-					// enter
-					function (p:Object):void
-					{
-						cpln("#######");
-						cpln("Tring to find the " + p.targetPrime + "th prime number");
-					},
-
 					// exit
 					function (p:Object):void
 					{
 						cpln("The " + p.targetPrime + "th prime number is " + p.value);
-					},
-
-					// param
-					{i: 1, primeCount: 0, targetPrime: 10, value: -1}
+					}
 				);
 
 			var job:StonedJob = new StonedJob(primeTask);

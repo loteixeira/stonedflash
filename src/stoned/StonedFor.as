@@ -14,9 +14,9 @@ package stoned
 	{
 		private var incrementCallback:Function;
 
-		public function StonedFor(loopCallback:Function = null, conditionCallback:Function = null, incrementCallback:Function = null, enterCallback:Function = null, exitCallback:Function = null, param:Object = null)
+		public function StonedFor(param:Object = null, enterCallback:Function = null, conditionCallback:Function = null, loopCallback:Function = null, incrementCallback:Function = null, exitCallback:Function = null)
 		{
-			super(loopCallback, conditionCallback, enterCallback, exitCallback, param);
+			super(param, enterCallback, conditionCallback, loopCallback, exitCallback);
 			this.incrementCallback = incrementCallback;
 		}
 
