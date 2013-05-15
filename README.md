@@ -1,7 +1,7 @@
-# stonedflash version 0.2.0
+# stonedflash version 0.3.0
 StonedFlash is a set of tools to perform asynchronous tasks in Actionscript3 without too much pain.
 
-**Download the latest tag:** https://github.com/loteixeira/stonedflash/archive/0.2.0.zip
+**Download the latest tag:** https://github.com/loteixeira/stonedflash/archive/0.3.0.zip
 
 This software is distribuited under the terms of the WTFPL (http://www.wtfpl.net/txt/copying/)<br>
 
