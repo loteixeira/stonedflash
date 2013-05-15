@@ -196,6 +196,18 @@ var job:StonedJob = new StonedJob(primeTask);
 job.go();
 ```
 
+## StonedLoader
+A StoneLoader is a proxy for Loader class. The constructor receives two parameters:
+* sourceData: may be a String, URLRequest or ByteArray instance (where you want to load the asset)
+* context: LoaderContext instance
+
+Example - load an image:
+```actionscript
+var loaderTask:StonedLoader = new StonedLoader("my_image.jpg");
+var job:StonedJob = new StonedJob(primeTask);
+job.go();
+```
+
 # compilation
 StonedFlash library is compiled via make tool. Two recipes are defined in makefile:
 * test: generates the test application (stonedflash-test.swf)
