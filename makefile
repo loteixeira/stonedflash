@@ -10,12 +10,13 @@ SWC_COM=compc
 SOURCE_PATH=src/
 
 # test stuff
-TEST_BIN=bin/async-test.swf
-TEST_MAIN=src/async/AsyncTest.as
+TEST_BIN=bin/stonedflash-test.swf
+TEST_MAIN=src/StonedTest.as
 TEST_FLAGS=-debug=false -static-link-runtime-shared-libraries=true -library-path+=lib/
 
 # library stuff
-LIB_BIN=bin/async.swc
+LIB_PATH=src/stoned
+LIB_BIN=bin/stonedflash.swc
 LIB_FLAGS=-debug=false
 
 
@@ -25,4 +26,4 @@ test:
 	$(SWF_COM) $(TEST_FLAGS) -source-path+=$(SOURCE_PATH) -output=$(TEST_BIN) -- $(TEST_MAIN)
 
 library:
-	$(SWC_COM) $(LIB_FLAGS) -include-sources=$(SOURCE_PATH) -library-path+=lib/ -output=$(LIB_BIN)
+	$(SWC_COM) $(LIB_FLAGS) -include-sources=$(LIB_PATH) -output=$(LIB_BIN)
