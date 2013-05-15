@@ -1,5 +1,5 @@
 # stonedflash version 0.3.0
-StonedFlash is a set of tools to perform asynchronous tasks in Actionscript3 without too much pain.
+StonedFlash is a set of tools to perform asynchronous tasks (loops, threads and resource loading) in Actionscript3 without too much pain.
 
 **Download the latest tag:** https://github.com/loteixeira/stonedflash/archive/0.3.0.zip
 
@@ -199,12 +199,24 @@ job.go();
 ## StonedLoader
 A StoneLoader is a proxy for Loader class. The constructor receives two parameters:
 * sourceData: may be a String, URLRequest or ByteArray instance (where you want to load the asset)
-* context: LoaderContext instance
+* context: LoaderContext instance - default value is null
 
 Example - load an image:
 ```actionscript
 var loaderTask:StonedLoader = new StonedLoader("my_image.jpg");
-var job:StonedJob = new StonedJob(primeTask);
+var job:StonedJob = new StonedJob(loaderTask);
+job.go();
+```
+
+## StonedURLLoader
+A StoneURLLoader is a proxy for URLLoader class. The constructor receives two parameters:
+* sourceData: may be a String or URLRequest instance (where you want to load the asset)
+* dataFormat: value from URLLoaderDataFormat class (binary, text or variables) - default value is text
+
+Example - load a xml file:
+```actionscript
+var loaderTask:StonedURLLoader = new StonedURLLoader("my_data.xml");
+var job:StonedJob = new StonedJob(loaderTask);
 job.go();
 ```
 
