@@ -6,18 +6,18 @@
 // This software is distribuited under the terms of the Do What the Fuck You Want to Public License
 // http://www.wtfpl.net/txt/copying/
 //
-package async
+package stoned
 {
 	import flash.utils.*;
 
 	/**
 	 * @author lteixeira
 	 */
-	public class AsyncLoop extends AsyncThread
+	public class StonedLoop extends StonedThread
 	{
 		private var conditionCallback:Function;
 
-		public function AsyncLoop(loopCallback:Function = null, conditionCallback:Function = null, enterCallback:Function = null, exitCallback:Function = null, param:Object = null)
+		public function StonedLoop(loopCallback:Function = null, conditionCallback:Function = null, enterCallback:Function = null, exitCallback:Function = null, param:Object = null)
 		{
 			super(loopCallback, enterCallback, exitCallback, param);
 			this.conditionCallback = conditionCallback;

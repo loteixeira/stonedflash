@@ -6,7 +6,7 @@
 // This software is distribuited under the terms of the Do What the Fuck You Want to Public License
 // http://www.wtfpl.net/txt/copying/
 //
-package async
+package
 {
 	import br.dcoder.console.*;
 
@@ -14,15 +14,17 @@ package async
 	import flash.events.*;
 	import flash.geom.*;
 
+	import stoned.*;
+
 	[SWF(width="800", height="600", backgroundColor="#FFFFFF", frameRate="30")]
-	public class AsyncTest extends Sprite
+	public class StonedTest extends Sprite
 	{
-		public function AsyncTest()
+		public function StonedTest()
 		{
 			Console.create(this);
 			Console.instance.draggable = false;
 			Console.instance.resizable = false;
-			cpln("async library version " + asyncVersion());
+			cpln("stonedflash library version " + stonedVersion());
 			cpln("starting test...");
 			cpln("");
 
@@ -47,7 +49,7 @@ package async
 
 		private function start():void
 		{
-			var primeTask:AsyncFor = new AsyncFor(
+			var primeTask:StonedFor = new StonedFor(
 					// run
 					function(p:Object):Boolean
 					{
@@ -103,7 +105,7 @@ package async
 					{i: 1, primeCount: 0, targetPrime: 10, value: -1}
 				);
 
-			var job:AsyncJob = new AsyncJob(primeTask);
+			var job:StonedJob = new StonedJob(primeTask);
 			job.go();
 		}
 	}

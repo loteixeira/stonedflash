@@ -6,16 +6,16 @@
 // This software is distribuited under the terms of the Do What the Fuck You Want to Public License
 // http://www.wtfpl.net/txt/copying/
 //
-package async
+package stoned
 {
 	import flash.events.*;
 
-	public class AsyncJob extends EventDispatcher
+	public class StonedJob extends EventDispatcher
 	{
 		private var tasks:Array;
 		private var current:int;
 
-		public function AsyncJob(...args)
+		public function StonedJob(...args)
 		{
 			tasks = [];
 			readFromArray(args);
@@ -32,7 +32,7 @@ package async
 			return current;
 		}
 
-		public function get currentTask():IAsyncTask
+		public function get currentTask():IStonedTask
 		{
 			return tasks[current];
 		}
@@ -55,7 +55,7 @@ package async
 			if (currentIndex >= taskCount)
 				return;
 
-			var task:IAsyncTask = tasks[current];
+			var task:IStonedTask = tasks[current];
 			task.exit();
 		}
 
@@ -67,12 +67,12 @@ package async
 			{
 				var data:* = array[i];
 
-				if (data is IAsyncTask)
+				if (data is IStonedTask)
 					tasks.push(data);
 				else if (data is Array)
 					readFromArray(data);
 				else
-					throw new TypeError("AsyncJob constructor expects only IAsyncJob and Array types");
+					throw new TypeError("StonedJob constructor expects only IStonedJob and Array types");
 			}
 		}
 
@@ -84,7 +84,7 @@ package async
 				return;
 			}
 
-			var task:IAsyncTask = tasks[current];
+			var task:IStonedTask = tasks[current];
 			task.addEventListener(Event.OPEN, taskOpen);
 			task.addEventListener(Event.COMPLETE, taskComplete);
 			task.start();
@@ -97,7 +97,7 @@ package async
 
 		private function taskComplete(e:Event):void
 		{
-			var task:IAsyncTask = tasks[current];
+			var task:IStonedTask = tasks[current];
 			task.removeEventListener(Event.OPEN, taskOpen);
 			task.removeEventListener(Event.COMPLETE, taskComplete);
 			dispatchEvent(new Event(Event.CLOSE));

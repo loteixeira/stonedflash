@@ -6,7 +6,7 @@
 // This software is distribuited under the terms of the Do What the Fuck You Want to Public License
 // http://www.wtfpl.net/txt/copying/
 //
-package async
+package stoned
 {
 	import flash.events.*;
 	import flash.utils.*;
@@ -14,14 +14,14 @@ package async
 	/**
 	 * @author lteixeira
 	 */
-	public class AsyncThread extends AsyncTask
+	public class StonedThread extends StonedTask
 	{
 		private var threadCallback:Function;
 		private var enterCallback:Function;
 		private var exitCallback:Function;
 		private var timeoutId:int;
 
-		public function AsyncThread(threadCallback:Function = null, enterCallback:Function = null, exitCallback:Function = null, param:Object = null)
+		public function StonedThread(threadCallback:Function = null, enterCallback:Function = null, exitCallback:Function = null, param:Object = null)
 		{
 			super(param);
 
@@ -30,7 +30,7 @@ package async
 			this.exitCallback = exitCallback;
 
 			timeoutId = -1;
-			priority = AsyncPriority.MEDIUM;
+			priority = StonedPriority.MEDIUM;
 		}
 
 		override public function get running():Boolean
@@ -84,16 +84,16 @@ package async
 
 		private function getMilisecondsFromPriority():uint
 		{
-			if (priority == AsyncPriority.HIGHEST)
+			if (priority == StonedPriority.HIGHEST)
 				return 0;
 
-			if (priority == AsyncPriority.HIGH)
+			if (priority == StonedPriority.HIGH)
 				return 10;
 
-			if (priority == AsyncPriority.MEDIUM)
+			if (priority == StonedPriority.MEDIUM)
 				return 50;
 
-			if (priority == AsyncPriority.LOW)
+			if (priority == StonedPriority.LOW)
 				return 100;
 
 			return 500;

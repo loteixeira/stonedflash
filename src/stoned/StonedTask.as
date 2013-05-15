@@ -6,11 +6,11 @@
 // This software is distribuited under the terms of the Do What the Fuck You Want to Public License
 // http://www.wtfpl.net/txt/copying/
 //
-package async
+package stoned
 {
 	import flash.events.*;
 
-	public class AsyncTask extends EventDispatcher implements IAsyncTask
+	public class StonedTask extends EventDispatcher implements IStonedTask
 	{
 		private var _priority:String;
 		private var openEvent:Event;
@@ -18,11 +18,11 @@ package async
 
 		protected var param:Object;
 
-		public function AsyncTask(param:Object = null)
+		public function StonedTask(param:Object = null)
 		{
 			this.param = param;
 
-			_priority = AsyncPriority.MEDIUM;
+			_priority = StonedPriority.MEDIUM;
 			openEvent = new Event(Event.OPEN);
 			completeEvent = new Event(Event.COMPLETE);
 		}

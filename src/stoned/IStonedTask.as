@@ -6,11 +6,11 @@
 // This software is distribuited under the terms of the Do What the Fuck You Want to Public License
 // http://www.wtfpl.net/txt/copying/
 //
-package async
+package stoned
 {
 	import flash.events.*;
 
-	public interface IAsyncTask extends IEventDispatcher
+	public interface IStonedTask extends IEventDispatcher
 	{
 		function get priority():String;
 		function set priority(value:String):void;

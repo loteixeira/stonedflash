@@ -6,9 +6,9 @@
 // This software is distribuited under the terms of the Do What the Fuck You Want to Public License
 // http://www.wtfpl.net/txt/copying/
 //
-package async
+package stoned
 {
-	public class AsyncPriority
+	public class StonedPriority
 	{
 		public static const HIGHEST:String = "highest";
 		public static const HIGH:String = "high";
