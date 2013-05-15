@@ -10,6 +10,6 @@ package stoned
 {
 	public function stonedVersion():String
 	{
-		return "0.2.0";
+		return "0.3.0";
 	}
 }
