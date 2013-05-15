@@ -1,27 +1,26 @@
-# async version 0.1.0
-Async is a set of tools to perform asynchronous tasks in Actionscript3 without too much pain.
+# stonedflash version 0.2.0
+StonedFlash is a set of tools to perform asynchronous tasks in Actionscript3 without too much pain.
 
-**Download the latest tag:** https://github.com/loteixeira/async/archive/0.1.0.zip
+**Download the latest tag:** https://github.com/loteixeira/stonedflash/archive/0.2.0.zip
 
-This software is distribuited under the terms of the Do What the Fuck You Want to Public License<br>
-http://www.wtfpl.net/txt/copying/
+This software is distribuited under the terms of the WTFPL (http://www.wtfpl.net/txt/copying/)<br>
 
 # basic
-Every async task must implements the interface IAsyncTask. Also, it needs to throw two events:
+Every stoned task must implement the interface IStonedTask. Also, it needs to throw two events:
 * Event.OPEN at start
 * Event.COMPLETE at end
 
-The interface IAsyncTask defines the following methods:
+The interface IStonedTask defines the following methods:
 * start: run the task (throws Event.OPEN)
 * run: iteration callback - the task runs until this method returns false
 * exit: end of the task (throws Event.COMPLETE)
 
-The class responsible to run a pack of tasks at once is AsyncJob. This class receives a list of tasks in contruction and throws Event.COMPLETE when the operation is complete.<br>
+The class responsible to run a pack of tasks at once is StonedJob. This class receives a list of tasks in contruction and throws Event.COMPLETE when the operation is complete.<br>
 Example:
 ```actionscript
 function runJob(tasks:Array):void
 {
-	var job:AsyncJob = new AsyncJob(tasks);
+	var job:StonedJob = new StonedJob(tasks);
 	job.addEventListener(Event.COMPLETE, jobComplete);
 	job.go();
 }
@@ -30,28 +29,20 @@ function runJob(tasks:Array):void
 # concrete tasks
 You may use the builtin concrete tasks available with the library. These classes simulates async operations such as threads, loops, etc.
 All concrete tasks are based in callbacks, you can set free-functions as callbacks, without the need of extending the concrete task class.
-However, it's possible also to extend a concrete task class and override the start, run and exit methods (without need of free-function callbacks).
+However, it's possible also to extend a concrete task class and override the start, run and exit methods (without using free-function callbacks).
 Thus, you get two options: create a concrete task with free-function callbacks or extends a concrete task and reimplement the methods.
 
-## AsyncThread
-A AsyncThread uses three callbacks:
+## StonedThread
+A StonedThread uses three callbacks:
 * enterCallback: called when the task starts
 * runCallback: called at each iteraction - the task will run until this method returns false
 * exitCallback: called when the task ends
 
 Example - calculate the average value:
 ```actionscript
-var averageTask:AsyncThread = new AsyncThread(
-	// run
-	function(p:Object):Boolean
-	{
-		for (var i:uint = 0; i < p.count; i++)
-			p.result += p.values[i];
-
-		p.result /= p.count;
-
-		return false;
-	},
+var averageTask:StonedThread = new StonedThread(
+	// param
+	{values: [], count: 10, result: 0},
 
 	// enter
 	function (p:Object):void
@@ -63,42 +54,40 @@ var averageTask:AsyncThread = new AsyncThread(
 			p.values.push(Math.random());
 	},
 
+	// run
+	function(p:Object):Boolean
+	{
+		for (var i:uint = 0; i < p.count; i++)
+			p.result += p.values[i];
+
+		p.result /= p.count;
+
+		return false;
+	},
+
 	// exit
 	function (p:Object):void
 	{
 		trace("The average value is " + p.result);
-	},
-
-	// param
-	{values: [], count: 10, result: 0}
+	}
 );
 
-var job:AsyncJob = new AsyncJob(averageTask);
+var job:StonedJob = new StonedJob(averageTask);
 job.go();
 ```
 
-## AsyncLoop
-A AsyncLoop uses four callbacks:
-* conditionCallback: called before runCallback - the task keeps running until this method returns false
+## StonedLoop
+A StonedLoop uses four callbacks:
 * enterCallback: called when the task starts
+* conditionCallback: called before runCallback - the task keeps running until this method returns false
 * runCallback: called at each iteraction - the return value of this function isn't used (now the conditionCallback tells whether the task should keep running)
 * exitCallback: called when the task ends
 
 Example - shows a list of numbers as hex values:
 ```actionscript
-var hexTask:AsyncLoop = new AsyncLoop(
-	// run
-	function(p:Object):Boolean
-	{
-		var value:uint = p.values.pop();
-		trace(value.toString(16));
-	},
-
-	// condition
-	function (p:Object):Boolean
-	{
-		return p.values.length > 0
-	},
+var hexTask:StonedLoop = new StonedLoop(
+	// param
+	{values: []},
 
 	// enter
 	function (p:Object):void
@@ -112,31 +101,57 @@ var hexTask:AsyncLoop = new AsyncLoop(
 			p.values.push(Math.round(Math.random() * 0xffffff));
 	},
 
+	// condition
+	function (p:Object):Boolean
+	{
+		return p.values.length > 0
+	},
+
+	// run
+	function(p:Object):Boolean
+	{
+		var value:uint = p.values.pop();
+		trace(value.toString(16));
+	},
+
 	// exit
 	function (p:Object):void
 	{
 		trace("Done!");
-	},
-
-	// param
-	{values: []}
+	}
 );
 
-var job:AsyncJob = new AsyncJob(hexTask);
+var job:StonedJob = new StonedJob(hexTask);
 job.go();
 ```
 
-## AsyncFor
-A AsyncFor uses five callbacks:
-* conditionCallback: called before runCallback - the task keeps running until this method returns false
-* incrementCallback: called after runCallback - it should be used to increment (or decrement) the counter variable
+## StonedFor
+A StonedFor uses five callbacks:
 * enterCallback: called when the task starts
+* conditionCallback: called before runCallback - the task keeps running until this method returns false
 * runCallback: called at each iteraction - the return value of this function isn't used (now the conditionCallback tells whether the task should keep running)
+* incrementCallback: called after runCallback - it should be used to increment (or decrement) the counter variable
 * exitCallback: called when the task ends
 
 Example - find the 10th prime number:
 ```actionscript
-var primeTask:AsyncFor = new AsyncFor(
+var primeTask:StonedFor = new StonedFor(
+	// param
+	{i: 1, primeCount: 0, targetPrime: 10, value: -1},
+
+	// enter
+	function (p:Object):void
+	{
+		trace("#######");
+		trace("Tring to find the " + p.targetPrime + "th prime number");
+	},
+
+	// condition
+	function (p:Object):Boolean
+	{
+		return p.primeCount < p.targetPrime;
+	},
+
 	// run
 	function(p:Object):Boolean
 	{
@@ -163,40 +178,24 @@ var primeTask:AsyncFor = new AsyncFor(
 		return true;
 	},
 
-	// condition
-	function (p:Object):Boolean
-	{
-		return p.primeCount < p.targetPrime;
-	},
-
 	// increment
 	function (p:Object):void
 	{
 		p.i++;
 	},
 
-	// enter
-	function (p:Object):void
-	{
-		trace("#######");
-		trace("Tring to find the " + p.targetPrime + "th prime number");
-	},
-
 	// exit
 	function (p:Object):void
 	{
 		trace("The " + p.targetPrime + "th prime number is " + p.value);
-	},
-
-	// param
-	{i: 1, primeCount: 0, targetPrime: 10, value: -1}
+	}
 );
 
-var job:AsyncJob = new AsyncJob(primeTask);
+var job:StonedJob = new StonedJob(primeTask);
 job.go();
 ```
 
 # compilation
-Async library is compiled via make tool. Two recipes are defined in makefile:
-* test: generates the test application (async-test.swf)
-* library: generates the library component (async.swc)
+StonedFlash library is compiled via make tool. Two recipes are defined in makefile:
+* test: generates the test application (stonedflash-test.swf)
+* library: generates the library component (stonedflash.swc)
