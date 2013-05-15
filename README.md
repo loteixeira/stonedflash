@@ -197,7 +197,7 @@ job.go();
 ```
 
 ## StonedLoader
-A StoneLoader is a proxy for Loader class. The constructor receives two parameters:
+A StonedLoader is a proxy for Loader class. The constructor receives two parameters:
 * sourceData: may be a String, URLRequest or ByteArray instance (where you want to load the asset)
 * context: LoaderContext instance - default value is null
 
@@ -209,7 +209,7 @@ job.go();
 ```
 
 ## StonedURLLoader
-A StoneURLLoader is a proxy for URLLoader class. The constructor receives two parameters:
+A StonedURLLoader is a proxy for URLLoader class. The constructor receives two parameters:
 * sourceData: may be a String or URLRequest instance (where you want to load the asset)
 * dataFormat: value from URLLoaderDataFormat class (binary, text or variables) - default value is text
 
