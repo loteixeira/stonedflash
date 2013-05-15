@@ -112,6 +112,7 @@ var hexTask:StonedLoop = new StonedLoop(
 	{
 		var value:uint = p.values.pop();
 		trace(value.toString(16));
+		return false;
 	},
 
 	// exit
